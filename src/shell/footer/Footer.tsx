@@ -1,48 +1,30 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { GridProps, HTMLChakraProps } from '@chakra-ui/react';
-import { Box, Grid, Flex, Text, VStack, HStack } from '@chakra-ui/react';
+import { Box, Grid, Flex, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import type { CustomLinksGroup } from './types';
 
-import useApiQuery from 'src/api/hooks/useApiQuery';
 import useFetch from 'src/api/hooks/useFetch';
 import type { ResourceError } from 'src/api/resources';
-
-import { useAppContext } from 'src/shell/app/context';
 import { CONTENT_MAX_WIDTH } from 'src/shell/layout/utils';
 
 import IndexingStatusInternalTxs from 'src/slices/chain/indexing-status/IndexingStatusInternalTxs';
+import NetworkLogo from 'src/slices/chain/logo/NetworkLogo';
 
 import NetworkAddToWallet from 'src/features/web3-wallet/components/NetworkAddToWallet';
 
 import config from 'src/config';
-import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import SpriteIcon from 'src/sprite/SpriteIcon';
 
-import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { copy } from 'src/toolkit/utils/htmlEntities';
-
-import FooterCookieSettings from './FooterCookieSettings';
 import FooterLinkItem from './FooterLinkItem';
-import { getApiVersionUrl } from './get-api-version-url';
 
 const MAX_LINKS_COLUMNS = 4;
 
 
 const Footer = () => {
-
-  const { data: backendVersionData } = useApiQuery('core:config_backend_version', {
-    queryOptions: {
-      staleTime: Infinity,
-      enabled: !config.features.multichain.isEnabled,
-      refetchOnMount: false,
-    },
-  });
-  const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version ?? undefined);
 
   const BLOCKSCOUT_LINKS = [
     {
@@ -52,22 +34,16 @@ const Footer = () => {
       url: 'https://www.instagram.com/sec_mainnet/',
     },
     {
-      icon: 'social/twitter_filled' as const,
-      iconSize: '20px',
-      text: 'X (ex-Twitter)',
-      url: 'https://x.com/sec_mainnet/',
-    },
-    {
-      icon: 'social/telegram_filled' as const,
-      iconSize: '20px',
-      text: 'Telegram',
-      url: 'https://t.me/SmartEnergyPayCommunity/',
-    },
-    {
       icon: 'social/git' as const,
       iconSize: '20px',
       text: 'Git',
       url: 'https://github.com/secblockchain/',
+    },
+    {
+      icon: 'social/twitter_filled' as const,
+      iconSize: '20px',
+      text: 'X (ex-Twitter)',
+      url: 'https://x.com/sec_mainnet/',
     },
     {
       icon: 'social/linkedin_filled' as const,
@@ -75,9 +51,13 @@ const Footer = () => {
       text: 'LinkedIn',
       url: 'https://www.linkedin.com/company/sec-mainnet/',
     },
+    {
+      icon: 'social/telegram_filled' as const,
+      iconSize: '20px',
+      text: 'Telegram',
+      url: 'https://t.me/SmartEnergyPayCommunity/',
+    },
   ].filter(Boolean);
-
-  const { onionDomain } = useAppContext();
 
   const fetch = useFetch();
 
@@ -129,6 +109,7 @@ const Footer = () => {
       <Box {...containerProps}>
         <Grid {...contentProps}>
           <div>
+            <NetworkLogo mb={ 6 }/>
             {renderNetworkInfo()}
           </div>
 
@@ -177,7 +158,10 @@ const Footer = () => {
         }}
       >
 
-        {renderNetworkInfo({ lg: 'network' })}
+        <Box gridArea={{ lg: 'network' }}>
+          <NetworkLogo mb={ 6 }/>
+          {renderNetworkInfo()}
+        </Box>
 
         <Grid
           gridArea={{ lg: 'links-bottom' }}
