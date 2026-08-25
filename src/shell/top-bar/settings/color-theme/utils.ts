@@ -44,8 +44,6 @@ export function getThemeHexWithOverrides(colorThemeId: ColorThemeId) {
   return defaultHex;
 };
 
-export function getDefaultColorTheme(colorMode: ColorMode) {
-  const colorTheme = COLOR_THEMES.filter((theme) => theme.colorMode === colorMode).slice(-1)[0];
-
-  return colorTheme.id;
+export function getDefaultColorTheme(_colorMode: ColorMode) {
+  return 'light' as const;
 }

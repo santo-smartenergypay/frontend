@@ -10,7 +10,6 @@ import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'src/to
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 
-import SettingsColorTheme from './color-theme/SettingsColorTheme';
 import SettingsIdentIcon from './ident-icon/SettingsIdentIcon';
 import SettingsAddressFormat from './SettingsAddressFormat';
 import SettingsPoorReputationTokens from './SettingsPoorReputationTokens';
@@ -37,8 +36,6 @@ const Settings = () => {
       positioning={{ placement: 'bottom-end' }}
       open={ popover.open }
       onOpenChange={ handlePopoverOpenChange }
-      // should be false to enable auto-switch to default color theme
-      lazyMount={ false }
     >
       { /* the tooltip must be fully disabled while the popover is open: the zag tooltip machine can
            self-open a controlled tooltip when another tooltip is visible (the tooltip-group instant-open
@@ -66,8 +63,6 @@ const Settings = () => {
       </Tooltip>
       <PopoverContent overflowY="hidden" w="auto" fontSize="sm">
         <PopoverBody>
-          <SettingsColorTheme onSelect={ popover.onClose }/>
-          <Separator my={ 3 }/>
           <SettingsIdentIcon/>
           <SettingsAddressFormat/>
           <Separator my={ 3 }/>

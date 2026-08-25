@@ -1,13 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { COLOR_THEMES, type ColorTheme, type ColorThemeId } from 'src/shell/top-bar/settings/color-theme/config';
+import { COLOR_THEMES, type ColorTheme } from 'src/shell/top-bar/settings/color-theme/config';
 
 import { getExternalAssetFilePath, getEnvValue, parseEnvJson } from 'src/config/utils/envs';
 
-const defaultColorTheme = (() => {
-  const envValue = getEnvValue('NEXT_PUBLIC_COLOR_THEME_DEFAULT') as ColorThemeId | undefined;
-  return COLOR_THEMES.find((theme) => theme.id === envValue) as ColorTheme | undefined;
-})();
+const defaultColorTheme = COLOR_THEMES.find((theme) => theme.id === 'light') as ColorTheme;
 
 const config = Object.freeze({
   chainMenu: {
