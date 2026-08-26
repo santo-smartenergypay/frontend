@@ -131,7 +131,6 @@ const Footer = () => {
       <Box {...containerProps}>
         <Grid {...contentProps}>
           <div>
-            <NetworkLogo h="40px" mb={6} />
             {renderNetworkInfo()}
           </div>
 
@@ -181,7 +180,6 @@ const Footer = () => {
       >
 
         <Box gridArea={{ lg: 'network' }}>
-          <NetworkLogo h="40px" mb={6} />
           {renderNetworkInfo()}
         </Box>
 
