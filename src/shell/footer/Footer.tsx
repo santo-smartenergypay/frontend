@@ -20,6 +20,7 @@ import NetworkLogo from 'src/slices/chain/logo/NetworkLogo';
 import NetworkAddToWallet from 'src/features/web3-wallet/components/NetworkAddToWallet';
 
 import config from 'src/config';
+import type { IconName } from 'src/sprite/SpriteIcon';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
@@ -28,15 +29,15 @@ import FooterLinkItem from './FooterLinkItem';
 const MAX_LINKS_COLUMNS = 4;
 
 type BlockScoutLink = {
-  icon: string;
+  icon: IconName;
   iconSize: string;
   text: string;
   url: string;
-}
+};
 
 const Footer = () => {
 
-  const BLOCKSCOUT_LINKS: BlockScoutLink[] = [
+  const BLOCKSCOUT_LINKS: Array<BlockScoutLink> = [
     {
       icon: 'social/facebook_filled',
       iconSize: '20px',
@@ -74,18 +75,12 @@ const Footer = () => {
       url: 'https://t.me/smartenergypay/',
     },
     {
-      icon: 'social/telegram_filled',
-      iconSize: '20px',
-      text: 'Telegram',
-      url: 'https://t.me/smartenergypay/',
-    },
-    {
       icon: 'docs',
       iconSize: '20px',
       text: 'Documentation',
       url: 'https://doc.stcexplorer.io/',
     },
-  ].filter(Boolean);
+  ];
 
   const fetch = useFetch();
 
