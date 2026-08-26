@@ -12,12 +12,12 @@ import { Image } from 'src/toolkit/chakra/image';
 
 import { INVERT_FILTER } from './consts';
 
-const LogoFallback = () => {
+const LogoFallback = ({ h }: { h: string }) => {
   return (
     <SpriteIcon
       name="networks/logo-placeholder"
-      width="120px"
-      height="24px"
+      width={ `${ Number.parseInt(h, 10) * 5 }px` }
+      height={ h }
       color={{ base: 'blue.600', _dark: 'white' }}
       aria-label="Network logo placeholder"
     />
@@ -26,9 +26,10 @@ const LogoFallback = () => {
 
 type Props = {
   className?: string;
+  h?: string;
 };
 
-const NetworkLogo = ({ className }: Props) => {
+const NetworkLogo = ({ className, h = '24px' }: Props) => {
 
   const logoSrc = useColorModeValue(config.chain.logo.default, config.chain.logo.dark || config.chain.logo.default);
 
@@ -39,11 +40,11 @@ const NetworkLogo = ({ className }: Props) => {
       aria-label="Link to main page"
     >
       <Image
-        h="24px"
-        skeletonWidth="120px"
+        h={ h }
+        skeletonWidth={ `${ Number.parseInt(h, 10) * 5 }px` }
         src={ logoSrc }
         alt={ `${ config.chain.name } network logo` }
-        fallback={ <LogoFallback/> }
+        fallback={ <LogoFallback h={ h }/> }
         filter={{ _dark: !config.chain.logo.dark ? INVERT_FILTER : undefined }}
         objectFit="contain"
         objectPosition="left"

@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { GridProps, HTMLChakraProps } from '@chakra-ui/react';
 import { Box, Grid, Flex, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
@@ -9,6 +11,7 @@ import type { CustomLinksGroup } from './types';
 
 import useFetch from 'src/api/hooks/useFetch';
 import type { ResourceError } from 'src/api/resources';
+
 import { CONTENT_MAX_WIDTH } from 'src/shell/layout/utils';
 
 import IndexingStatusInternalTxs from 'src/slices/chain/indexing-status/IndexingStatusInternalTxs';
@@ -19,43 +22,68 @@ import NetworkAddToWallet from 'src/features/web3-wallet/components/NetworkAddTo
 import config from 'src/config';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+
 import FooterLinkItem from './FooterLinkItem';
 
 const MAX_LINKS_COLUMNS = 4;
 
+type BlockScoutLink = {
+  icon: string;
+  iconSize: string;
+  text: string;
+  url: string;
+}
 
 const Footer = () => {
 
-  const BLOCKSCOUT_LINKS = [
+  const BLOCKSCOUT_LINKS: BlockScoutLink[] = [
     {
-      icon: 'social/instagram' as const,
+      icon: 'social/facebook_filled',
       iconSize: '20px',
-      text: 'Instagram',
-      url: 'https://www.instagram.com/sec_mainnet/',
+      text: 'Facebook',
+      url: 'https://www.facebook.com/share/18WVJYkCWK/',
     },
     {
-      icon: 'social/git' as const,
+      icon: 'social/instagram',
+      iconSize: '20px',
+      text: 'Instagram',
+      url: 'https://www.instagram.com/smart_energy_pay?igsh=MThvczM5cWJha3NkaQ==/',
+    },
+    {
+      icon: 'social/twitter_filled',
+      iconSize: '20px',
+      text: 'X (ex-Twitter)',
+      url: 'https://x.com/smartenergypay/',
+    },
+    {
+      icon: 'social/git',
       iconSize: '20px',
       text: 'Git',
       url: 'https://github.com/secblockchain/',
     },
     {
-      icon: 'social/twitter_filled' as const,
-      iconSize: '20px',
-      text: 'X (ex-Twitter)',
-      url: 'https://x.com/sec_mainnet/',
-    },
-    {
-      icon: 'social/linkedin_filled' as const,
+      icon: 'social/linkedin_filled',
       iconSize: '20px',
       text: 'LinkedIn',
-      url: 'https://www.linkedin.com/company/sec-mainnet/',
+      url: 'https://www.linkedin.com/company/smartenergypay/posts/?feedView=all/',
     },
     {
-      icon: 'social/telegram_filled' as const,
+      icon: 'social/telegram_filled',
       iconSize: '20px',
       text: 'Telegram',
-      url: 'https://t.me/SmartEnergyPayCommunity/',
+      url: 'https://t.me/smartenergypay/',
+    },
+    {
+      icon: 'social/telegram_filled',
+      iconSize: '20px',
+      text: 'Telegram',
+      url: 'https://t.me/smartenergypay/',
+    },
+    {
+      icon: 'docs',
+      iconSize: '20px',
+      text: 'Documentation',
+      url: 'https://doc.stcexplorer.io/',
     },
   ].filter(Boolean);
 
@@ -83,7 +111,6 @@ const Footer = () => {
         mb={{ base: 5, lg: 10 }}
         _empty={{ display: 'none' }}
       >
-        {!config.chain.indexingStatus.intTxs.isHidden && <IndexingStatusInternalTxs />}
         {!config.features.multichain.isEnabled && <NetworkAddToWallet source="Footer" />}
       </Flex>
     );
@@ -109,7 +136,7 @@ const Footer = () => {
       <Box {...containerProps}>
         <Grid {...contentProps}>
           <div>
-            <NetworkLogo mb={ 6 }/>
+            <NetworkLogo h="40px" mb={6} />
             {renderNetworkInfo()}
           </div>
 
@@ -159,7 +186,7 @@ const Footer = () => {
       >
 
         <Box gridArea={{ lg: 'network' }}>
-          <NetworkLogo mb={ 6 }/>
+          <NetworkLogo h="40px" mb={6} />
           {renderNetworkInfo()}
         </Box>
 
