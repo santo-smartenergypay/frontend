@@ -9,7 +9,6 @@ import type { Props as ServerSidePropsCommon } from 'src/server/getServerSidePro
 
 import config from 'src/config';
 import { buildServerConfig } from 'src/services/rollbar/serverConfig';
-import * as cookies from 'src/shared/storage/cookies';
 
 const rollbar = config.services.rollbar.clientToken ?
   new Rollbar(buildServerConfig(config.services.rollbar.clientToken)) :
@@ -20,8 +19,7 @@ type Props = ServerSidePropsCommon & {
 };
 
 const CustomErrorComponent = (props: Props) => {
-  const colorModeCookie = cookies.getFromCookieString(props.cookies || '', cookies.NAMES.COLOR_MODE);
-  return <NextErrorComponent statusCode={ props.statusCode } withDarkMode={ colorModeCookie === 'dark' }/>;
+  return <NextErrorComponent statusCode={ props.statusCode } withDarkMode={ false }/>;
 };
 
 CustomErrorComponent.getInitialProps = async(context: NextPageContext) => {

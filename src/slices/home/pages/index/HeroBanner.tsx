@@ -16,7 +16,7 @@ import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 
 export const BACKGROUND_DEFAULT =
-  'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)';
+  'radial-gradient(103.03% 103.03% at 0% 0%, rgb(1, 66, 0) 0%, rgb(0, 22, 0) 100%), rgb(1, 66, 0)';
 const TEXT_COLOR_DEFAULT = 'white';
 const BORDER_DEFAULT = 'none';
 
