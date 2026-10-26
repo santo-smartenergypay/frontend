@@ -1,115 +1,89 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { GridProps, HTMLChakraProps } from '@chakra-ui/react';
-import { Box, Grid, Flex, Text, VStack, HStack } from '@chakra-ui/react';
+import { Box, Grid, Flex, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import type { CustomLinksGroup } from './types';
 
-import useApiQuery from 'src/api/hooks/useApiQuery';
 import useFetch from 'src/api/hooks/useFetch';
 import type { ResourceError } from 'src/api/resources';
 
-import { useAppContext } from 'src/shell/app/context';
 import { CONTENT_MAX_WIDTH } from 'src/shell/layout/utils';
 
-import IndexingStatusInternalTxs from 'src/slices/chain/indexing-status/IndexingStatusInternalTxs';
+import NetworkLogo from 'src/slices/chain/logo/NetworkLogo';
 
 import NetworkAddToWallet from 'src/features/web3-wallet/components/NetworkAddToWallet';
 
 import config from 'src/config';
-import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import SpriteIcon from 'src/sprite/SpriteIcon';
+import type { IconName } from 'src/sprite/SpriteIcon';
 
-import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { copy } from 'src/toolkit/utils/htmlEntities';
 
-import FooterCookieSettings from './FooterCookieSettings';
 import FooterLinkItem from './FooterLinkItem';
-import { getApiVersionUrl } from './get-api-version-url';
 
 const MAX_LINKS_COLUMNS = 4;
 
-const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ config.shell.footer.frontendVersion }`;
-const FRONT_COMMIT_URL = `https://github.com/blockscout/frontend/commit/${ config.shell.footer.frontendCommit }`;
+type BlockScoutLink = {
+  icon: IconName;
+  iconSize: string;
+  text: string;
+  url: string;
+};
 
 const Footer = () => {
 
-  const { data: backendVersionData } = useApiQuery('core:config_backend_version', {
-    queryOptions: {
-      staleTime: Infinity,
-      enabled: !config.features.multichain.isEnabled,
-      refetchOnMount: false,
-    },
-  });
-  const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version ?? undefined);
-
-  const BLOCKSCOUT_LINKS = [
+  const BLOCKSCOUT_LINKS: Array<BlockScoutLink> = [
     {
-      icon: 'social/git' as const,
+      icon: 'social/facebook_filled',
       iconSize: '20px',
-      text: 'Contribute',
-      url: 'https://github.com/blockscout/blockscout',
+      text: 'Facebook',
+      url: 'https://www.facebook.com/share/18WVJYkCWK/',
     },
     {
-      icon: 'brands/pro_api' as const,
+      icon: 'social/instagram',
       iconSize: '20px',
-      text: 'PRO API',
-      url: 'https://dev.blockscout.com',
+      text: 'Instagram',
+      url: 'https://www.instagram.com/smart_energy_pay?igsh=MThvczM5cWJha3NkaQ==/',
     },
     {
-      icon: 'brands/autoscout' as const,
+      icon: 'social/twitter_filled',
       iconSize: '20px',
-      text: 'Autoscout',
-      url: 'https://autoscout.blockscout.com',
+      text: 'X (ex-Twitter)',
+      url: 'https://x.com/smartenergypay/',
     },
     {
-      icon: 'docs' as const,
+      icon: 'social/git',
       iconSize: '20px',
-      text: 'Docs',
-      url: 'https://docs.blockscout.com',
+      text: 'Git',
+      url: 'https://github.com/secblockchain/',
     },
     {
-      icon: 'social/twitter' as const,
-      iconSize: '24px',
-      text: 'X',
-      url: 'https://x.com/blockscout',
-    },
-    {
-      icon: 'social/discord' as const,
-      iconSize: '24px',
-      text: 'Discord',
-      url: 'https://discord.gg/blockscout',
-    },
-    {
-      icon: 'brands/blockscout' as const,
+      icon: 'social/linkedin_filled',
       iconSize: '20px',
-      text: 'All chains',
-      url: 'https://chains.blockscout.com',
+      text: 'LinkedIn',
+      url: 'https://www.linkedin.com/company/smartenergypay/posts/?feedView=all/',
     },
-  ].filter(Boolean);
-
-  const frontendLink = (() => {
-    if (config.shell.footer.frontendVersion) {
-      return <Link href={ FRONT_VERSION_URL } external noIcon>{ config.shell.footer.frontendVersion }</Link>;
-    }
-
-    if (config.shell.footer.frontendCommit) {
-      return <Link href={ FRONT_COMMIT_URL } external noIcon>{ config.shell.footer.frontendCommit }</Link>;
-    }
-
-    return null;
-  })();
-
-  const { onionDomain } = useAppContext();
+    {
+      icon: 'social/telegram_filled',
+      iconSize: '20px',
+      text: 'Telegram',
+      url: 'https://t.me/smartenergypay/',
+    },
+    {
+      icon: 'docs',
+      iconSize: '20px',
+      text: 'Documentation',
+      url: 'https://doc.stcexplorer.io/',
+    },
+  ];
 
   const fetch = useFetch();
 
   const { isPlaceholderData, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>({
-    queryKey: [ 'footer-links' ],
-    queryFn: async() => fetch(config.shell.footer.links || '', undefined, { resource: 'footer-links' }),
+    queryKey: ['footer-links'],
+    queryFn: async () => fetch(config.shell.footer.links || '', undefined, { resource: 'footer-links' }),
     enabled: Boolean(config.shell.footer.links),
     staleTime: Infinity,
     placeholderData: [],
@@ -121,64 +95,18 @@ const Footer = () => {
     return (
       <Flex
         alignItems="center"
-        gridArea={ gridArea }
+        gridArea={gridArea}
         flexWrap="wrap"
         justifyContent="flex-start"
-        columnGap={ 3 }
-        rowGap={ 2 }
+        columnGap={3}
+        rowGap={2}
         mb={{ base: 5, lg: 10 }}
         _empty={{ display: 'none' }}
       >
-        { !config.chain.indexingStatus.intTxs.isHidden && <IndexingStatusInternalTxs/> }
-        { !config.features.multichain.isEnabled && <NetworkAddToWallet source="Footer"/> }
+        {!config.features.multichain.isEnabled && <NetworkAddToWallet source="Footer" />}
       </Flex>
     );
   }, []);
-
-  const renderProjectInfo = React.useCallback((gridArea?: GridProps['gridArea']) => {
-    const logoColor = { base: 'blue.600', _dark: 'white' };
-
-    return (
-      <Box gridArea={ gridArea }>
-        <Flex columnGap={ 2 } textStyle="xs" alignItems="center">
-          <span>Made with</span>
-          <Link href="https://www.blockscout.com" external noIcon display="inline-flex" color={ logoColor } _hover={{ color: logoColor }}>
-            <SpriteIcon
-              name="networks/logo-placeholder"
-              width="80px"
-              height={ 4 }
-            />
-          </Link>
-        </Flex>
-        <Text mt={ 3 } fontSize="xs">
-          Scan, inspect, and analyze EVM based blockchains with Blockscout, a blockchain explorer for Ethereum networks.
-        </Text>
-        <VStack mt={ 6 } alignItems="start" textStyle="xs" gap={ 1 }>
-          <Flex flexDir={ onionDomain ? 'row' : 'column' } _empty={{ display: 'none' }} columnGap={ 6 } rowGap={ 1 }>
-            { apiVersionUrl && (
-              <Text>
-                Backend: <Link href={ apiVersionUrl } external noIcon>{ backendVersionData?.backend_version }</Link>
-              </Text>
-            ) }
-            { frontendLink && (
-              <Text>
-                Frontend: { frontendLink }
-              </Text>
-            ) }
-          </Flex>
-          { onionDomain && (
-            <HStack _empty={{ display: 'none' }} columnGap={ 0 }>
-              <Text aria-label={ `Also accessible via Tor Browser: ${ onionDomain }` }>Also accessible via Tor Browser</Text>
-              <CopyToClipboard text={ onionDomain } tooltipContent="Copy .onion address to clipboard" ml={ 1 }/>
-            </HStack>
-          ) }
-          <Text>
-            Copyright { copy } Blockscout Limited 2023-{ (new Date()).getFullYear() }
-          </Text>
-        </VStack>
-      </Box>
-    );
-  }, [ apiVersionUrl, backendVersionData?.backend_version, frontendLink, onionDomain ]);
 
   const containerProps: HTMLChakraProps<'div'> = {
     as: 'footer',
@@ -191,51 +119,24 @@ const Footer = () => {
     py: { base: 4, lg: 8 },
     gridTemplateColumns: { base: '1fr', lg: 'minmax(auto, 470px) 1fr' },
     columnGap: { lg: '32px', xl: '100px' },
-    maxW: `${ CONTENT_MAX_WIDTH }px`,
+    maxW: `${CONTENT_MAX_WIDTH}px`,
     m: '0 auto',
-  };
-
-  const renderRecaptcha = (gridArea?: GridProps['gridArea']) => {
-    if (!config.services.reCaptcha.siteKey) {
-      return <Box gridArea={ gridArea }/>;
-    }
-
-    return (
-      <Box gridArea={ gridArea } textStyle="xs" mt={ 6 }>
-        <span>This site is protected by reCAPTCHA and the Google </span>
-        <Link href="https://policies.google.com/privacy" external noIcon>Privacy Policy</Link>
-        <span> and </span>
-        <Link href="https://policies.google.com/terms" external noIcon>Terms of Service</Link>
-        <span> apply.</span>
-      </Box>
-    );
-  };
-
-  const renderCookieSettings = (gridArea?: GridProps['gridArea']) => {
-    if (!config.services.usercentrics) {
-      return <Box gridArea={ gridArea }/>;
-    }
-
-    return <FooterCookieSettings gridArea={ gridArea }/>;
   };
 
   if (config.shell.footer.links) {
     return (
-      <Box { ...containerProps }>
-        <Grid { ...contentProps }>
+      <Box {...containerProps}>
+        <Grid {...contentProps}>
           <div>
-            { renderNetworkInfo() }
-            { renderProjectInfo() }
-            { renderRecaptcha() }
-            { renderCookieSettings() }
+            {renderNetworkInfo()}
           </div>
 
           <Grid
             gap={{ base: 6, lg: colNum === MAX_LINKS_COLUMNS + 1 ? 2 : 8, xl: 12 }}
             gridTemplateColumns={{
               base: 'repeat(auto-fill, 160px)',
-              lg: `repeat(${ colNum }, 135px)`,
-              xl: `repeat(${ colNum }, 160px)`,
+              lg: `repeat(${colNum}, 135px)`,
+              xl: `repeat(${colNum}, 160px)`,
             }}
             justifyContent={{ lg: 'flex-end' }}
             mt={{ base: 8, lg: 0 }}
@@ -247,10 +148,10 @@ const Footer = () => {
               ])
                 .slice(0, colNum)
                 .map(linkGroup => (
-                  <Box key={ linkGroup.title }>
-                    <Skeleton fontWeight={ 500 } mb={ 3 } display="inline-block" loading={ isPlaceholderData }>{ linkGroup.title }</Skeleton>
-                    <VStack gap={ 1 } alignItems="start">
-                      { linkGroup.links.map(link => <FooterLinkItem { ...link } key={ link.text } isLoading={ isPlaceholderData }/>) }
+                  <Box key={linkGroup.title}>
+                    <Skeleton fontWeight={500} mb={3} display="inline-block" loading={isPlaceholderData}>{linkGroup.title}</Skeleton>
+                    <VStack gap={1} alignItems="start">
+                      {linkGroup.links.map(link => <FooterLinkItem {...link} key={link.text} isLoading={isPlaceholderData} />)}
                     </VStack>
                   </Box>
                 ))
@@ -262,9 +163,9 @@ const Footer = () => {
   }
 
   return (
-    <Box { ...containerProps }>
+    <Box {...containerProps}>
       <Grid
-        { ...contentProps }
+        {...contentProps}
         gridTemplateAreas={{
           lg: `
           "network links-top"
@@ -275,14 +176,13 @@ const Footer = () => {
         }}
       >
 
-        { renderNetworkInfo({ lg: 'network' }) }
-        { renderProjectInfo({ lg: 'info' }) }
-        { renderRecaptcha({ lg: 'recaptcha' }) }
-        { renderCookieSettings({ lg: 'cookie-settings' }) }
+        <Box gridArea={{ lg: 'network' }}>
+          {renderNetworkInfo()}
+        </Box>
 
         <Grid
           gridArea={{ lg: 'links-bottom' }}
-          gap={ 1 }
+          gap={1}
           gridTemplateColumns={{
             base: 'repeat(auto-fill, 160px)',
             lg: 'repeat(2, 160px)',
@@ -298,7 +198,7 @@ const Footer = () => {
           justifyContent={{ lg: 'flex-end' }}
           mt={{ base: 8, lg: 0 }}
         >
-          { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
+          {BLOCKSCOUT_LINKS.map(link => <FooterLinkItem {...link} key={link.text} />)}
         </Grid>
       </Grid>
     </Box>

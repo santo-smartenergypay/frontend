@@ -177,6 +177,7 @@
 	| "social/facebook_filled"
 	| "social/git"
 	| "social/github_filled"
+	| "social/instagram"
 	| "social/linkedin_filled"
 	| "social/medium_filled"
 	| "social/opensea_filled"
